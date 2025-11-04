@@ -1,0 +1,194 @@
+{
+  "tileSize": {
+    "width": 93,
+    "height": 90
+  },
+  "gridLayout": {
+    "columns": 5,
+    "rows": 5
+  },
+  "edgeTypes": {
+    "G": "Grass/Field",
+    "R": "Road",
+    "C": "City"
+  },
+  "tiles": [
+    {
+      "id": 0,
+      "name": "Monastery in field",
+      "edges": "GGGG",
+      "spriteX": 0,
+      "spriteY": 0,
+      "notes": "North, East, South, West"
+    },
+    {
+      "id": 1,
+      "name": "Monastery with road",
+      "edges": "GGRG",
+      "spriteX": 1,
+      "spriteY": 0
+    },
+    {
+      "id": 2,
+      "name": "Full city w shield",
+      "edges": "CCCC",
+      "spriteX": 2,
+      "spriteY": 0
+    },
+    {
+      "id": 3,
+      "name": "City 3 sides (open south)",
+      "edges": "CCGC",
+      "spriteX": 3,
+      "spriteY": 0
+    },
+    {
+      "id": 4,
+      "name": "City 3 sides (open south) w shield",
+      "edges": "CCGC",
+      "spriteX": 4,
+      "spriteY": 0
+    },
+    {
+      "id": 5,
+      "name": "City 3 sides, road south",
+      "edges": "CCRC",
+      "spriteX": 0,
+      "spriteY": 1
+    },
+    {
+      "id": 6,
+      "name": "City top, road south w shield",
+      "edges": "CCRC",
+      "spriteX": 1,
+      "spriteY": 1
+    },
+    {
+      "id": 7,
+      "name": "City top and left",
+      "edges": "CGGC",
+      "spriteX": 2,
+      "spriteY": 1
+    },
+    {
+      "id": 8,
+      "name": "City top and left w shield",
+      "edges": "CGGC",
+      "spriteX": 3,
+      "spriteY": 1
+    },
+    {
+      "id": 9,
+      "name": "City top and left, road south and right",
+      "edges": "CRRC",
+      "spriteX": 4,
+      "spriteY": 1
+    },
+        {
+      "id": 10,
+      "name": "City top and left, road south and right",
+      "edges": "CRRC",
+      "spriteX": 0,
+      "spriteY": 2
+    },
+    {
+      "id": 11,
+      "name": "City sides (east+west)",
+      "edges": "GCGC",
+      "spriteX": 1,
+      "spriteY": 2
+    },
+    {
+      "id": 12,
+      "name": "City sides (east+west) w shield",
+      "edges": "GCGC",
+      "spriteX": 2,
+      "spriteY": 2
+    },
+    {
+      "id": 13,
+      "name": "City top and left",
+      "edges": "CGGC",
+      "spriteX": 3,
+      "spriteY": 2
+    },
+    {
+      "id": 14,
+      "name": "City top and bottom separate",
+      "edges": "CGCG",
+      "spriteX": 4,
+      "spriteY": 2
+    },
+    {
+      "id": 15,
+      "name": "City top",
+      "edges": "CGGG",
+      "spriteX": 0,
+      "spriteY": 3
+    },
+    {
+      "id": 16,
+      "name": "City top, road bottom and left",
+      "edges": "CGRR",
+      "spriteX": 1,
+      "spriteY": 3
+    },
+    {
+      "id": 17,
+      "name": "City top, road bottom and right",
+      "edges": "CRRG",
+      "spriteX": 2,
+      "spriteY": 3
+    },
+    {
+      "id": 18,
+      "name": "City top with roads T",
+      "edges": "CRRR",
+      "spriteX": 3,
+      "spriteY": 3
+    },
+    {
+      "id": 19,
+      "name": "City top with road side to side",
+      "edges": "CRGR",
+      "spriteX": 4,
+      "spriteY": 3
+    },
+        {
+      "id": 20,
+      "name": "Road straight (north-south)",
+      "edges": "RGRG",
+      "spriteX": 0,
+      "spriteY": 4
+    },
+      {
+      "id": 21,
+      "name": "Road bottom to left",
+      "edges": "GGRR",
+      "spriteX": 1,
+      "spriteY": 4
+    },
+    {
+      "id": 22,
+      "name": "Road T-junction (3-way)",
+      "edges": "GRRR",
+      "spriteX": 2,
+      "spriteY": 4
+    },
+    {
+      "id": 23,
+      "name": "Road cross (4-way)",
+      "edges": "RRRR",
+      "spriteX": 3,
+      "spriteY": 4
+    },
+    {
+      "id": 24,
+      "name": "Road east west with city",
+      "edges": "CRGR",
+      "spriteX": 4,
+      "spriteY": 4,
+      "note": "Starting Tile"
+    }
+  ]
+}
