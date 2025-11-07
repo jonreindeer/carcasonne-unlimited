@@ -6,22 +6,27 @@ An infinite scrolling Carcassonne tile placement game built with TypeScript and 
 ## What We've Built
 
 ### Core Features
-- **Tile sprite sheet processing**: Extracted 25 clean tiles (5×5 grid) from original image, removing borders and numbering
+- **Individual tile images**: Using 88×88px individual tile images (25 tiles) with better edge quality
 - **Edge type definitions**: All 25 tiles documented with NESW (North, East, South, West) edge types in `tile-definitions.json`
-  - G = Grass/Field
+  - F = Grass/Field
   - R = Road
   - C = City
 - **Tile matching algorithm**: Finds valid tiles with rotation (0°, 90°, 180°, 270°) that match adjacent tiles' edges
 - **Rotation system**: Clockwise rotation correctly transforms edge positions
 - **Canvas rendering**: Tiles rendered with proper rotation at 100×100 pixels
-- **Debug logging**: Console logs show tile placement, edge requirements, and rotation decisions
+- **Random tile replacement**: Continuously selects random tiles and attempts to replace them with valid alternatives
+  - Runs automatically after initial render (enabled by default)
+  - Checks all 4 adjacent edges to find valid replacements
+  - Control via `enableRandomReplacement` property or `stopRandomReplacement()` method
+- **Debug logging**: Console logs show tile placement, edge requirements, rotation decisions, and replacement attempts
 
 ### File Structure
 - `index.html` - Main webpage
 - `game.ts` - TypeScript game logic
 - `game.js` - Compiled JavaScript (generated via `make build`)
 - `tile-definitions.json` - Complete tile edge definitions
-- `carcasonne-tiles/tiles-clean.png` - Processed sprite sheet (465×450px, 5×5 grid of 93×90px tiles)
+- `carcasonne-tiles/individual/` - Individual tile images (0.jpg through 24.jpg, 88×88px each)
+- `carcasonne-tiles/tiles-clean.png` - Processed sprite sheet (legacy, no longer used)
 - `process_tiles.py` - Python script to extract clean tiles from original sprite sheet
 - `Makefile` - Build commands (build, clean, run, watch)
 - `pyproject.toml` / `uv.lock` - UV-managed Python dependencies (Pillow, numpy)
@@ -37,17 +42,21 @@ An infinite scrolling Carcassonne tile placement game built with TypeScript and 
 - ✅ Tiles start with tile 24 at top-left
 - ✅ Edge continuity working correctly
 - ✅ Rotation working correctly (clockwise)
-- ✅ Clean sprite sheet with no borders
+- ✅ Individual tile images with better edge quality (88×88px)
+- ✅ Random tile replacement system working (enabled by default)
 
 ## TODOs
 
 ### High Priority
 - [ ] **Fix scrolling**: Currently doesn't scroll properly - tiles should appear as user scrolls down
 - [ ] **Auto-scroll**: Automatically scroll down to show new tiles being generated
+- [ ] **Match tile frequencies**: Implement proper Carcassonne tile distribution (some tiles appear more frequently in the actual game)
+- [ ] **Random pull mode**: Alternative placement mode where a random tile is drawn first, then a valid position is found (like real gameplay)
 
 ### Medium Priority
 - [ ] **Animate possible fit pieces**: Show preview/animation of tiles being considered for placement
-- [ ] **Better sprites**: Improve tile artwork or use higher quality source images
+- [ ] **River expansion**: Add river tiles and river placement logic
+- [ ] **Upsample tiles**: Increase resolution of tile images for better quality at larger sizes
 
 ### Low Priority
 - [ ] **Infinite scroll up**: Support scrolling up as well as down

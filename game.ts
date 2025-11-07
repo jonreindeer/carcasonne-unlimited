@@ -9,8 +9,7 @@ enum EdgeType {
 interface TileDefinition {
     id: string;
     edges: [EdgeType, EdgeType, EdgeType, EdgeType];
-    spriteX: number;  // Position in sprite sheet (column)
-    spriteY: number;  // Position in sprite sheet (row)
+    imagePath: string;  // Path to individual tile image
 }
 
 interface PlacedTile {
@@ -20,67 +19,59 @@ interface PlacedTile {
     y: number;
 }
 
-// Define all tile types based on the sprite sheet
-// Analyzing the sprite sheet: 5 columns × 5 rows (tiles-clean.png)
+// Define all tile types with individual tile images
 // Edge format: [North, East, South, West]
 const TILE_DEFINITIONS: TileDefinition[] = [
-    // Row 0
-    { id: '0', edges: [EdgeType.FIELD, EdgeType.FIELD, EdgeType.FIELD, EdgeType.FIELD], spriteX: 0, spriteY: 0 },  // Monastery in field
-    { id: '1', edges: [EdgeType.FIELD, EdgeType.FIELD, EdgeType.ROAD, EdgeType.FIELD], spriteX: 1, spriteY: 0 },   // Monastery with road
-    { id: '2', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.CITY, EdgeType.CITY], spriteX: 2, spriteY: 0 },      // Full city w shield
-    { id: '3', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY], spriteX: 3, spriteY: 0 },     // City 3 sides (open south)
-    { id: '4', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY], spriteX: 4, spriteY: 0 },     // City 3 sides w shield
-
-    // Row 1
-    { id: '5', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.ROAD, EdgeType.CITY], spriteX: 0, spriteY: 1 },      // City 3 sides, road south
-    { id: '6', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.ROAD, EdgeType.CITY], spriteX: 1, spriteY: 1 },     // City top, road south w shield
-    { id: '7', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.FIELD, EdgeType.CITY], spriteX: 2, spriteY: 1 },    // City top and left
-    { id: '8', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.FIELD, EdgeType.CITY], spriteX: 3, spriteY: 1 },    // City top and left w shield
-    { id: '9', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.ROAD, EdgeType.CITY], spriteX: 4, spriteY: 1 },      // City top and left, road south and right
-
-    // Row 2
-    { id: '10', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.ROAD, EdgeType.CITY], spriteX: 0, spriteY: 2 },     // City top and left, road south and right
-    { id: '11', edges: [EdgeType.FIELD, EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY], spriteX: 1, spriteY: 2 },   // City sides (east+west)
-    { id: '12', edges: [EdgeType.FIELD, EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY], spriteX: 2, spriteY: 2 },   // City sides (east+west) w shield
-    { id: '13', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.FIELD, EdgeType.CITY], spriteX: 3, spriteY: 2 },   // City top and left
-    { id: '14', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY, EdgeType.FIELD], spriteX: 4, spriteY: 2 },   // City top and bottom separate
-
-    // Row 3
-    { id: '15', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.FIELD, EdgeType.FIELD], spriteX: 0, spriteY: 3 },  // City top
-    { id: '16', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.ROAD, EdgeType.ROAD], spriteX: 1, spriteY: 3 },    // City top, road bottom and left
-    { id: '17', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.ROAD, EdgeType.FIELD], spriteX: 2, spriteY: 3 },    // City top, road bottom and right
-    { id: '18', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD], spriteX: 3, spriteY: 3 },     // City top with roads T
-    { id: '19', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.FIELD, EdgeType.ROAD], spriteX: 4, spriteY: 3 },    // City top with road side to side
-
-    // Row 4
-    { id: '20', edges: [EdgeType.ROAD, EdgeType.FIELD, EdgeType.ROAD, EdgeType.FIELD], spriteX: 0, spriteY: 4 },   // Road straight (north-south)
-    { id: '21', edges: [EdgeType.FIELD, EdgeType.FIELD, EdgeType.ROAD, EdgeType.ROAD], spriteX: 1, spriteY: 4 },   // Road bottom to left
-    { id: '22', edges: [EdgeType.FIELD, EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD], spriteX: 2, spriteY: 4 },    // Road T-junction (3-way)
-    { id: '23', edges: [EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD], spriteX: 3, spriteY: 4 },     // Road cross (4-way)
-    { id: '24', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.FIELD, EdgeType.ROAD], spriteX: 4, spriteY: 4 },     // Road east west with city (Starting Tile)
+    { id: '0', edges: [EdgeType.FIELD, EdgeType.FIELD, EdgeType.FIELD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/individual/0.jpg' },  // Monastery in field
+    { id: '1', edges: [EdgeType.FIELD, EdgeType.FIELD, EdgeType.ROAD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/individual/1.jpg' },   // Monastery with road
+    { id: '2', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.CITY, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/2.jpg' },      // Full city w shield
+    { id: '3', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/3.jpg' },     // City 3 sides (open south)
+    { id: '4', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/4.jpg' },     // City 3 sides w shield
+    { id: '5', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.ROAD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/5.jpg' },      // City 3 sides, road south
+    { id: '6', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.ROAD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/6.jpg' },     // City top, road south w shield
+    { id: '7', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/7.jpg' },    // City top and left
+    { id: '8', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/8.jpg' },    // City top and left w shield
+    { id: '9', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.ROAD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/9.jpg' },      // City top and left, road south and right
+    { id: '10', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.ROAD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/10.jpg' },     // City top and left, road south and right
+    { id: '11', edges: [EdgeType.FIELD, EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/11.jpg' },   // City sides (east+west)
+    { id: '12', edges: [EdgeType.FIELD, EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/12.jpg' },   // City sides (east+west) w shield
+    { id: '13', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/13.jpg' },   // City top and left
+    { id: '14', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY, EdgeType.FIELD], imagePath: 'carcasonne-tiles/individual/14.jpg' },   // City top and bottom separate
+    { id: '15', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.FIELD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/individual/15.jpg' },  // City top
+    { id: '16', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/individual/16.jpg' },    // City top, road bottom and left
+    { id: '17', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.ROAD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/individual/17.jpg' },    // City top, road bottom and right
+    { id: '18', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/individual/18.jpg' },     // City top with roads T
+    { id: '19', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.FIELD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/individual/19.jpg' },    // City top with road side to side
+    { id: '20', edges: [EdgeType.ROAD, EdgeType.FIELD, EdgeType.ROAD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/individual/20.jpg' },   // Road straight (north-south)
+    { id: '21', edges: [EdgeType.FIELD, EdgeType.FIELD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/individual/21.jpg' },   // Road bottom to left
+    { id: '22', edges: [EdgeType.FIELD, EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/individual/22.jpg' },    // Road T-junction (3-way)
+    { id: '23', edges: [EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/individual/23.jpg' },     // Road cross (4-way)
+    { id: '24', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.FIELD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/individual/24.jpg' },     // Road east west with city (Starting Tile)
 ];
 
 class CarcassonneGame {
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
-    private spriteSheet: HTMLImageElement;
-    private spriteLoaded: boolean = false;
+    private tileImages: Map<string, HTMLImageElement> = new Map();
+    private imagesLoaded: boolean = false;
 
     private readonly TILE_SIZE = 100;  // Size of each tile in pixels
-    private readonly SPRITE_TILE_WIDTH = 93;  // Width of each tile in the sprite sheet (465/5)
-    private readonly SPRITE_TILE_HEIGHT = 90;  // Height of each tile in the sprite sheet (450/5)
     private readonly TILES_PER_ROW = 16;  // Number of tiles per row on screen
 
     private tiles: PlacedTile[] = [];
     private grid: Map<string, PlacedTile> = new Map();
     private highestRow: number = -1;
 
+    // Random tile replacement feature
+    public enableRandomReplacement: boolean = true;
+    private replacementIntervalId: number | null = null;
+
     constructor() {
         this.canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
         this.ctx = this.canvas.getContext('2d')!;
 
         this.setupCanvas();
-        this.loadSpriteSheet();
+        this.loadTileImages();
         this.setupScrollListener();
     }
 
@@ -94,14 +85,24 @@ class CarcassonneGame {
         this.canvas.style.display = 'block';
     }
 
-    private loadSpriteSheet(): void {
-        this.spriteSheet = new Image();
-        this.spriteSheet.onload = () => {
-            this.spriteLoaded = true;
-            this.generateInitialTiles();
-            this.render();
-        };
-        this.spriteSheet.src = 'carcasonne-tiles/tiles-clean.png';
+    private loadTileImages(): void {
+        let loadedCount = 0;
+        const totalImages = TILE_DEFINITIONS.length;
+
+        for (const tileDef of TILE_DEFINITIONS) {
+            const img = new Image();
+            img.onload = () => {
+                loadedCount++;
+                if (loadedCount === totalImages) {
+                    this.imagesLoaded = true;
+                    this.generateInitialTiles();
+                    this.render();
+                    this.startRandomReplacementInterval();
+                }
+            };
+            img.src = tileDef.imagePath;
+            this.tileImages.set(tileDef.id, img);
+        }
     }
 
     private generateInitialTiles(): void {
@@ -127,15 +128,22 @@ class CarcassonneGame {
 
             const scrollPosition = window.scrollY;
             const windowHeight = window.innerHeight;
-            const documentHeight = document.documentElement.scrollHeight;
 
-            // Check if we're 3/4 down the page
-            const threshold = documentHeight - windowHeight * 1.25;
+            // Calculate the bottom of currently rendered tiles
+            const bottomOfTiles = (this.highestRow + 1) * this.TILE_SIZE;
 
-            if (scrollPosition > threshold) {
+            // Trigger when viewport is within 2 rows of the bottom of rendered tiles
+            const threshold = bottomOfTiles - this.TILE_SIZE * 2;
+
+            if (scrollPosition + windowHeight > threshold) {
                 isGenerating = true;
-                this.generateNewRow();
-                this.extendCanvas();
+
+                // Generate multiple rows at once to stay ahead of scrolling
+                for (let i = 0; i < 3; i++) {
+                    this.generateNewRow();
+                    this.extendCanvas();
+                }
+
                 isGenerating = false;
             }
         });
@@ -266,7 +274,7 @@ class CarcassonneGame {
     }
 
     private render(): void {
-        if (!this.spriteLoaded) return;
+        if (!this.imagesLoaded) return;
 
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -279,19 +287,18 @@ class CarcassonneGame {
         const x = tile.x * this.TILE_SIZE;
         const y = tile.y * this.TILE_SIZE;
 
+        const tileImage = this.tileImages.get(tile.definition.id);
+        if (!tileImage) return;
+
         this.ctx.save();
 
         // Move to tile center for rotation
         this.ctx.translate(x + this.TILE_SIZE / 2, y + this.TILE_SIZE / 2);
         this.ctx.rotate((tile.rotation * Math.PI) / 180);
 
-        // Draw the sprite
+        // Draw the tile image
         this.ctx.drawImage(
-            this.spriteSheet,
-            tile.definition.spriteX * this.SPRITE_TILE_WIDTH,
-            tile.definition.spriteY * this.SPRITE_TILE_HEIGHT,
-            this.SPRITE_TILE_WIDTH,
-            this.SPRITE_TILE_HEIGHT,
+            tileImage,
             -this.TILE_SIZE / 2,
             -this.TILE_SIZE / 2,
             this.TILE_SIZE,
@@ -305,6 +312,114 @@ class CarcassonneGame {
         const countElement = document.getElementById('tileCount');
         if (countElement) {
             countElement.textContent = this.tiles.length.toString();
+        }
+    }
+
+    private startRandomReplacementInterval(): void {
+        if (this.replacementIntervalId !== null) {
+            window.clearInterval(this.replacementIntervalId);
+        }
+
+        this.replacementIntervalId = window.setInterval(() => {
+            if (this.enableRandomReplacement) {
+                this.tryRandomReplacement();
+            }
+        }, 250);
+    }
+
+    private tryRandomReplacement(): void {
+        if (this.tiles.length === 0) return;
+
+        // Select a random tile
+        const randomIndex = Math.floor(Math.random() * this.tiles.length);
+        const targetTile = this.tiles[randomIndex];
+
+        console.log(`\n=== Random Replacement Check ===`);
+        console.log(`Selected tile at (${targetTile.x}, ${targetTile.y}) - Tile ${targetTile.definition.id} with rotation ${targetTile.rotation}°`);
+
+        // Get required edges from all four adjacent tiles
+        const topEdge = this.getEdgeAtPosition(targetTile.x, targetTile.y - 1, 2);     // Bottom edge of tile above
+        const rightEdge = this.getEdgeAtPosition(targetTile.x + 1, targetTile.y, 3);   // Left edge of tile to the right
+        const bottomEdge = this.getEdgeAtPosition(targetTile.x, targetTile.y + 1, 0);  // Top edge of tile below
+        const leftEdge = this.getEdgeAtPosition(targetTile.x - 1, targetTile.y, 1);    // Right edge of tile to the left
+
+        console.log(`  Required edges - Top: ${topEdge || 'none'}, Right: ${rightEdge || 'none'}, Bottom: ${bottomEdge || 'none'}, Left: ${leftEdge || 'none'}`);
+
+        // Find all matching tiles (including different rotations)
+        const matchingTile = this.findMatchingTileForAllEdges(topEdge, rightEdge, bottomEdge, leftEdge, targetTile.x, targetTile.y);
+
+        if (matchingTile) {
+            // Replace the tile
+            matchingTile.x = targetTile.x;
+            matchingTile.y = targetTile.y;
+
+            // Update in the tiles array
+            this.tiles[randomIndex] = matchingTile;
+
+            // Update in the grid
+            this.grid.set(this.getGridKey(targetTile.x, targetTile.y), matchingTile);
+
+            console.log(`  ✓ Replaced with tile ${matchingTile.definition.id} at rotation ${matchingTile.rotation}°`);
+
+            // Re-render to show the change
+            this.render();
+        } else {
+            console.log(`  ✗ No valid replacement found - keeping current tile`);
+        }
+    }
+
+    private findMatchingTileForAllEdges(
+        requiredTop: EdgeType | null,
+        requiredRight: EdgeType | null,
+        requiredBottom: EdgeType | null,
+        requiredLeft: EdgeType | null,
+        x: number,
+        y: number
+    ): PlacedTile | null {
+        const possibleTiles: Array<{def: TileDefinition, rotation: number}> = [];
+
+        // Try all tiles with all rotations
+        for (const tileDef of TILE_DEFINITIONS) {
+            for (const rotation of [0, 90, 180, 270]) {
+                const rotatedEdges = this.getRotatedEdges(tileDef.edges, rotation);
+
+                // Check if all edges match
+                const topMatch = requiredTop === null || rotatedEdges[0] === requiredTop;
+                const rightMatch = requiredRight === null || rotatedEdges[1] === requiredRight;
+                const bottomMatch = requiredBottom === null || rotatedEdges[2] === requiredBottom;
+                const leftMatch = requiredLeft === null || rotatedEdges[3] === requiredLeft;
+
+                if (topMatch && rightMatch && bottomMatch && leftMatch) {
+                    possibleTiles.push({def: tileDef, rotation});
+                }
+            }
+        }
+
+        console.log(`  Found ${possibleTiles.length} possible tile(s)`);
+
+        if (possibleTiles.length === 0) {
+            return null;
+        }
+
+        // Randomly select one
+        const selected = possibleTiles[Math.floor(Math.random() * possibleTiles.length)];
+        const rotatedEdges = this.getRotatedEdges(selected.def.edges, selected.rotation);
+
+        console.log(`  Selected tile ${selected.def.id} with rotation ${selected.rotation}°`);
+        console.log(`    Rotated edges:  [N:${rotatedEdges[0]}, E:${rotatedEdges[1]}, S:${rotatedEdges[2]}, W:${rotatedEdges[3]}]`);
+
+        return {
+            definition: selected.def,
+            rotation: selected.rotation,
+            x: 0,  // Will be set by caller
+            y: 0   // Will be set by caller
+        };
+    }
+
+    public stopRandomReplacement(): void {
+        if (this.replacementIntervalId !== null) {
+            window.clearInterval(this.replacementIntervalId);
+            this.replacementIntervalId = null;
         }
     }
 }
