@@ -324,7 +324,7 @@ class CarcassonneGame {
             if (this.enableRandomReplacement) {
                 this.tryRandomReplacement();
             }
-        }, 250);
+        }, 25);  // Here's the timer
     }
 
     private tryRandomReplacement(): void {
@@ -334,37 +334,122 @@ class CarcassonneGame {
         const randomIndex = Math.floor(Math.random() * this.tiles.length);
         const targetTile = this.tiles[randomIndex];
 
-        console.log(`\n=== Random Replacement Check ===`);
+        console.log(`\n=== Random Edge Modification ===`);
         console.log(`Selected tile at (${targetTile.x}, ${targetTile.y}) - Tile ${targetTile.definition.id} with rotation ${targetTile.rotation}°`);
 
-        // Get required edges from all four adjacent tiles
-        const topEdge = this.getEdgeAtPosition(targetTile.x, targetTile.y - 1, 2);     // Bottom edge of tile above
-        const rightEdge = this.getEdgeAtPosition(targetTile.x + 1, targetTile.y, 3);   // Left edge of tile to the right
-        const bottomEdge = this.getEdgeAtPosition(targetTile.x, targetTile.y + 1, 0);  // Top edge of tile below
-        const leftEdge = this.getEdgeAtPosition(targetTile.x - 1, targetTile.y, 1);    // Right edge of tile to the left
+        // Randomly select an edge (0=North, 1=East, 2=South, 3=West)
+        const edgeIndex = Math.floor(Math.random() * 4);
+        const edgeNames = ['North', 'East', 'South', 'West'];
 
-        console.log(`  Required edges - Top: ${topEdge || 'none'}, Right: ${rightEdge || 'none'}, Bottom: ${bottomEdge || 'none'}, Left: ${leftEdge || 'none'}`);
+        // Randomly select a new edge type
+        const edgeTypes = [EdgeType.FIELD, EdgeType.ROAD, EdgeType.CITY];
+        const newEdgeType = edgeTypes[Math.floor(Math.random() * edgeTypes.length)];
 
-        // Find all matching tiles (including different rotations)
-        const matchingTile = this.findMatchingTileForAllEdges(topEdge, rightEdge, bottomEdge, leftEdge, targetTile.x, targetTile.y);
+        console.log(`  Changing ${edgeNames[edgeIndex]} edge to ${newEdgeType}`);
 
-        if (matchingTile) {
-            // Replace the tile
-            matchingTile.x = targetTile.x;
-            matchingTile.y = targetTile.y;
+        // Determine which adjacent tile shares this edge and needs to be updated
+        let adjacentX = targetTile.x;
+        let adjacentY = targetTile.y;
+        let adjacentEdgeIndex = 0;
 
-            // Update in the tiles array
-            this.tiles[randomIndex] = matchingTile;
+        switch (edgeIndex) {
+            case 0: // North edge - affects tile above (its South edge)
+                adjacentY = targetTile.y - 1;
+                adjacentEdgeIndex = 2;
+                break;
+            case 1: // East edge - affects tile to the right (its West edge)
+                adjacentX = targetTile.x + 1;
+                adjacentEdgeIndex = 3;
+                break;
+            case 2: // South edge - affects tile below (its North edge)
+                adjacentY = targetTile.y + 1;
+                adjacentEdgeIndex = 0;
+                break;
+            case 3: // West edge - affects tile to the left (its East edge)
+                adjacentX = targetTile.x - 1;
+                adjacentEdgeIndex = 1;
+                break;
+        }
 
-            // Update in the grid
-            this.grid.set(this.getGridKey(targetTile.x, targetTile.y), matchingTile);
+        // Get the current rotated edges of the target tile
+        const currentRotatedEdges = this.getRotatedEdges(targetTile.definition.edges, targetTile.rotation);
 
-            console.log(`  ✓ Replaced with tile ${matchingTile.definition.id} at rotation ${matchingTile.rotation}°`);
+        // Create the new required edges for the target tile
+        const newTargetEdges: [EdgeType | null, EdgeType | null, EdgeType | null, EdgeType | null] = [
+            edgeIndex === 0 ? newEdgeType : currentRotatedEdges[0],
+            edgeIndex === 1 ? newEdgeType : currentRotatedEdges[1],
+            edgeIndex === 2 ? newEdgeType : currentRotatedEdges[2],
+            edgeIndex === 3 ? newEdgeType : currentRotatedEdges[3]
+        ];
 
-            // Re-render to show the change
-            this.render();
+        // Get constraints from other adjacent tiles (not the one we're modifying the edge with)
+        const topEdge = edgeIndex === 0 ? newEdgeType : this.getEdgeAtPosition(targetTile.x, targetTile.y - 1, 2);
+        const rightEdge = edgeIndex === 1 ? newEdgeType : this.getEdgeAtPosition(targetTile.x + 1, targetTile.y, 3);
+        const bottomEdge = edgeIndex === 2 ? newEdgeType : this.getEdgeAtPosition(targetTile.x, targetTile.y + 1, 0);
+        const leftEdge = edgeIndex === 3 ? newEdgeType : this.getEdgeAtPosition(targetTile.x - 1, targetTile.y, 1);
+
+        console.log(`  Finding new tile for position (${targetTile.x}, ${targetTile.y}) with edges [N:${topEdge}, E:${rightEdge}, S:${bottomEdge}, W:${leftEdge}]`);
+
+        // Find a matching tile for the target position
+        const newTargetTile = this.findMatchingTileForAllEdges(topEdge, rightEdge, bottomEdge, leftEdge, targetTile.x, targetTile.y);
+
+        // Check if there's an adjacent tile that needs updating
+        const adjacentTile = this.grid.get(this.getGridKey(adjacentX, adjacentY));
+
+        let needsRender = false;
+
+        if (newTargetTile) {
+            // Replace the target tile
+            newTargetTile.x = targetTile.x;
+            newTargetTile.y = targetTile.y;
+            this.tiles[randomIndex] = newTargetTile;
+            this.grid.set(this.getGridKey(targetTile.x, targetTile.y), newTargetTile);
+            console.log(`  ✓ Replaced target tile with tile ${newTargetTile.definition.id} at rotation ${newTargetTile.rotation}°`);
+            needsRender = true;
         } else {
-            console.log(`  ✗ No valid replacement found - keeping current tile`);
+            console.log(`  ✗ No matching tile found for target position - keeping original tile`);
+            // Keep the original tile
+            return;
+        }
+
+        if (adjacentTile) {
+            console.log(`  Finding new tile for adjacent position (${adjacentX}, ${adjacentY})`);
+
+            // Get constraints for the adjacent tile
+            const adjTopEdge = adjacentEdgeIndex === 0 ? newEdgeType : this.getEdgeAtPosition(adjacentX, adjacentY - 1, 2);
+            const adjRightEdge = adjacentEdgeIndex === 1 ? newEdgeType : this.getEdgeAtPosition(adjacentX + 1, adjacentY, 3);
+            const adjBottomEdge = adjacentEdgeIndex === 2 ? newEdgeType : this.getEdgeAtPosition(adjacentX, adjacentY + 1, 0);
+            const adjLeftEdge = adjacentEdgeIndex === 3 ? newEdgeType : this.getEdgeAtPosition(adjacentX - 1, adjacentY, 1);
+
+            console.log(`    Required edges [N:${adjTopEdge}, E:${adjRightEdge}, S:${adjBottomEdge}, W:${adjLeftEdge}]`);
+
+            const newAdjacentTile = this.findMatchingTileForAllEdges(adjTopEdge, adjRightEdge, adjBottomEdge, adjLeftEdge, adjacentX, adjacentY);
+
+            if (newAdjacentTile) {
+                // Replace the adjacent tile
+                newAdjacentTile.x = adjacentX;
+                newAdjacentTile.y = adjacentY;
+
+                // Find the adjacent tile in the tiles array and replace it
+                const adjIndex = this.tiles.findIndex(t => t.x === adjacentX && t.y === adjacentY);
+                if (adjIndex !== -1) {
+                    this.tiles[adjIndex] = newAdjacentTile;
+                }
+
+                this.grid.set(this.getGridKey(adjacentX, adjacentY), newAdjacentTile);
+                console.log(`    ✓ Replaced adjacent tile with tile ${newAdjacentTile.definition.id} at rotation ${newAdjacentTile.rotation}°`);
+                needsRender = true;
+            } else {
+                console.log(`    ✗ No matching tile found for adjacent position - reverting target tile change`);
+                // Revert the target tile back to original since we can't match the adjacent
+                this.tiles[randomIndex] = targetTile;
+                this.grid.set(this.getGridKey(targetTile.x, targetTile.y), targetTile);
+                needsRender = true;
+            }
+        }
+
+        if (needsRender) {
+            this.render();
         }
     }
 
