@@ -8,3 +8,21 @@ wheels/
 
 # Virtual environments
 .venv
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Claude Code
+.claude/
+
+# Python version
+.python-version
+
+# Tile processing (intermediate files no longer needed)
+carcasonne-tiles/tiles-clean.png
+main.py
+process_tiles.py
+pyproject.toml
+uv.lock
