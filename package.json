@@ -1,0 +1,19 @@
+{
+  "name": "carcasonne-unlimited",
+  "version": "1.0.0",
+  "description": "Creates and morphs an unlimited map of tiles based on the game carcasonne",
+  "scripts": {
+    "build": "tsc src/game.ts --outFile dist/game.js --target ES2015 --lib ES2015,DOM && cp src/index.html dist/ && cp -r src/carcasonne-tiles dist/",
+    "clean": "rm -rf dist",
+    "dev": "npm run build && python3 -m http.server 8000 --directory dist"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jonreindeer/carcasonne-unlimited.git"
+  },
+  "author": "",
+  "license": "MIT"
+}
