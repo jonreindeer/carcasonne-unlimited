@@ -10,6 +10,7 @@ interface TileDefinition {
     id: string;
     edges: [EdgeType, EdgeType, EdgeType, EdgeType];
     imagePath: string;  // Path to individual tile image
+    has_shield: boolean;  // Whether the tile has a shield/badge
 }
 
 interface PlacedTile {
@@ -22,31 +23,31 @@ interface PlacedTile {
 // Define all tile types with individual tile images
 // Edge format: [North, East, South, West]
 const TILE_DEFINITIONS: TileDefinition[] = [
-    { id: '0', edges: [EdgeType.FIELD, EdgeType.FIELD, EdgeType.FIELD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/individual/0.jpg' },  // Monastery in field
-    { id: '1', edges: [EdgeType.FIELD, EdgeType.FIELD, EdgeType.ROAD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/individual/1.jpg' },   // Monastery with road
-    { id: '2', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.CITY, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/2.jpg' },      // Full city w shield
-    { id: '3', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/3.jpg' },     // City 3 sides (open south)
-    { id: '4', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/4.jpg' },     // City 3 sides w shield
-    { id: '5', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.ROAD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/5.jpg' },      // City 3 sides, road south
-    { id: '6', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.ROAD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/6.jpg' },     // City top, road south w shield
-    { id: '7', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/7.jpg' },    // City top and left
-    { id: '8', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/8.jpg' },    // City top and left w shield
-    { id: '9', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.ROAD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/9.jpg' },      // City top and left, road south and right
-    { id: '10', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.ROAD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/10.jpg' },     // City top and left, road south and right
-    { id: '11', edges: [EdgeType.FIELD, EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/11.jpg' },   // City sides (east+west)
-    { id: '12', edges: [EdgeType.FIELD, EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/12.jpg' },   // City sides (east+west) w shield
-    { id: '13', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/13.jpg' },   // City top and left
-    { id: '14', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY, EdgeType.FIELD], imagePath: 'carcasonne-tiles/individual/14.jpg' },   // City top and bottom separate
-    { id: '15', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.FIELD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/individual/15.jpg' },  // City top
-    { id: '16', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/individual/16.jpg' },    // City top, road bottom and left
-    { id: '17', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.ROAD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/individual/17.jpg' },    // City top, road bottom and right
-    { id: '18', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/individual/18.jpg' },     // City top with roads T
-    { id: '19', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.FIELD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/individual/19.jpg' },    // City top with road side to side
-    { id: '20', edges: [EdgeType.ROAD, EdgeType.FIELD, EdgeType.ROAD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/individual/20.jpg' },   // Road straight (north-south)
-    { id: '21', edges: [EdgeType.FIELD, EdgeType.FIELD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/individual/21.jpg' },   // Road bottom to left
-    { id: '22', edges: [EdgeType.FIELD, EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/individual/22.jpg' },    // Road T-junction (3-way)
-    { id: '23', edges: [EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/individual/23.jpg' },     // Road cross (4-way)
-    { id: '24', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.FIELD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/individual/24.jpg' },     // Road east west with city (Starting Tile)
+    { id: '0', edges: [EdgeType.FIELD, EdgeType.FIELD, EdgeType.FIELD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/individual/0.jpg', has_shield: false },  // Monastery in field
+    { id: '1', edges: [EdgeType.FIELD, EdgeType.FIELD, EdgeType.ROAD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/individual/1.jpg', has_shield: false },   // Monastery with road
+    { id: '2', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.CITY, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/2.jpg', has_shield: true },      // Full city w shield
+    { id: '3', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/3.jpg', has_shield: false },     // City 3 sides (open south)
+    { id: '4', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/4.jpg', has_shield: true },     // City 3 sides w shield
+    { id: '5', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.ROAD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/5.jpg', has_shield: false },      // City 3 sides, road south
+    { id: '6', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.ROAD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/6.jpg', has_shield: true },     // City top, road south w shield
+    { id: '7', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/7.jpg', has_shield: false },    // City top and left
+    { id: '8', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/8.jpg', has_shield: true },    // City top and left w shield
+    { id: '9', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.ROAD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/9.jpg', has_shield: false },      // City top and left, road south and right
+    { id: '10', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.ROAD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/10.jpg', has_shield: true },     // City top and left, road south and right
+    { id: '11', edges: [EdgeType.FIELD, EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/11.jpg', has_shield: false },   // City sides (east+west)
+    { id: '12', edges: [EdgeType.FIELD, EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/12.jpg', has_shield: true },   // City sides (east+west) w shield
+    { id: '13', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/13.jpg', has_shield: false },   // City top and left
+    { id: '14', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY, EdgeType.FIELD], imagePath: 'carcasonne-tiles/individual/14.jpg', has_shield: false },   // City top and bottom separate
+    { id: '15', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.FIELD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/individual/15.jpg', has_shield: false },  // City top
+    { id: '16', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/individual/16.jpg', has_shield: false },    // City top, road bottom and left
+    { id: '17', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.ROAD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/individual/17.jpg', has_shield: false },    // City top, road bottom and right
+    { id: '18', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/individual/18.jpg', has_shield: false },     // City top with roads T
+    { id: '19', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.FIELD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/individual/19.jpg', has_shield: false },    // City top with road side to side
+    { id: '20', edges: [EdgeType.ROAD, EdgeType.FIELD, EdgeType.ROAD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/individual/20.jpg', has_shield: false },   // Road straight (north-south)
+    { id: '21', edges: [EdgeType.FIELD, EdgeType.FIELD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/individual/21.jpg', has_shield: false },   // Road bottom to left
+    { id: '22', edges: [EdgeType.FIELD, EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/individual/22.jpg', has_shield: false },    // Road T-junction (3-way)
+    { id: '23', edges: [EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/individual/23.jpg', has_shield: false },     // Road cross (4-way)
+    { id: '24', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.FIELD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/individual/24.jpg', has_shield: false },     // Road east west with city (Starting Tile)
 ];
 
 class CarcassonneGame {
@@ -65,6 +66,9 @@ class CarcassonneGame {
     // Random tile replacement feature
     public enableRandomReplacement: boolean = true;
     private replacementIntervalId: number | null = null;
+
+    // Tile filtering options
+    public includeShieldTiles: boolean = false;  // Default: exclude tiles with shields
 
     constructor() {
         this.canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
@@ -118,6 +122,13 @@ class CarcassonneGame {
 
     private getGridKey(x: number, y: number): string {
         return `${x},${y}`;
+    }
+
+    private getAvailableTiles(): TileDefinition[] {
+        if (this.includeShieldTiles) {
+            return TILE_DEFINITIONS;
+        }
+        return TILE_DEFINITIONS.filter(tile => !tile.has_shield);
     }
 
     private setupScrollListener(): void {
@@ -213,9 +224,10 @@ class CarcassonneGame {
 
     private findMatchingTile(requiredTop: EdgeType | null, requiredLeft: EdgeType | null, x: number, y: number): PlacedTile | null {
         const possibleTiles: Array<{def: TileDefinition, rotation: number}> = [];
+        const availableTiles = this.getAvailableTiles();
 
-        // Try all tiles with all rotations
-        for (const tileDef of TILE_DEFINITIONS) {
+        // Try all available tiles with all rotations
+        for (const tileDef of availableTiles) {
             for (const rotation of [0, 90, 180, 270]) {
                 const rotatedEdges = this.getRotatedEdges(tileDef.edges, rotation);
 
@@ -462,9 +474,10 @@ class CarcassonneGame {
         y: number
     ): PlacedTile | null {
         const possibleTiles: Array<{def: TileDefinition, rotation: number}> = [];
+        const availableTiles = this.getAvailableTiles();
 
-        // Try all tiles with all rotations
-        for (const tileDef of TILE_DEFINITIONS) {
+        // Try all available tiles with all rotations
+        for (const tileDef of availableTiles) {
             for (const rotation of [0, 90, 180, 270]) {
                 const rotatedEdges = this.getRotatedEdges(tileDef.edges, rotation);
 
