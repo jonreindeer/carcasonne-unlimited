@@ -132,6 +132,25 @@ class CarcassonneGame {
         return TILE_DEFINITIONS.filter(tile => !tile.has_shield);
     }
 
+    private selectWeightedTile(possibleTiles: Array<{def: TileDefinition, rotation: number}>): {def: TileDefinition, rotation: number} {
+        // Calculate total weight
+        const totalWeight = possibleTiles.reduce((sum, tile) => sum + tile.def.occurrences_per_deck, 0);
+
+        // Generate random number between 0 and totalWeight
+        let random = Math.random() * totalWeight;
+
+        // Select tile based on cumulative weights
+        for (const tile of possibleTiles) {
+            random -= tile.def.occurrences_per_deck;
+            if (random <= 0) {
+                return tile;
+            }
+        }
+
+        // Fallback (should never reach here)
+        return possibleTiles[possibleTiles.length - 1];
+    }
+
     private setupScrollListener(): void {
         let isGenerating = false;
 
@@ -249,11 +268,11 @@ class CarcassonneGame {
             return null;
         }
 
-        // Randomly select one
-        const selected = possibleTiles[Math.floor(Math.random() * possibleTiles.length)];
+        // Select tile using weighted random based on occurrences_per_deck
+        const selected = this.selectWeightedTile(possibleTiles);
         const rotatedEdges = this.getRotatedEdges(selected.def.edges, selected.rotation);
 
-        console.log(`  Selected tile ${selected.def.id} with rotation ${selected.rotation}°`);
+        console.log(`  Selected tile ${selected.def.id} with rotation ${selected.rotation}° (weight: ${selected.def.occurrences_per_deck})`);
         console.log(`    Original edges: [N:${selected.def.edges[0]}, E:${selected.def.edges[1]}, S:${selected.def.edges[2]}, W:${selected.def.edges[3]}]`);
         console.log(`    Rotated edges:  [N:${rotatedEdges[0]}, E:${rotatedEdges[1]}, S:${rotatedEdges[2]}, W:${rotatedEdges[3]}]`);
         console.log(`    Left edge (West) = ${rotatedEdges[3]} ${requiredLeft ? `(matches required ${requiredLeft})` : '(no requirement)'}`);
@@ -500,11 +519,11 @@ class CarcassonneGame {
             return null;
         }
 
-        // Randomly select one
-        const selected = possibleTiles[Math.floor(Math.random() * possibleTiles.length)];
+        // Select tile using weighted random based on occurrences_per_deck
+        const selected = this.selectWeightedTile(possibleTiles);
         const rotatedEdges = this.getRotatedEdges(selected.def.edges, selected.rotation);
 
-        console.log(`  Selected tile ${selected.def.id} with rotation ${selected.rotation}°`);
+        console.log(`  Selected tile ${selected.def.id} with rotation ${selected.rotation}° (weight: ${selected.def.occurrences_per_deck})`);
         console.log(`    Rotated edges:  [N:${rotatedEdges[0]}, E:${rotatedEdges[1]}, S:${rotatedEdges[2]}, W:${rotatedEdges[3]}]`);
 
         return {
