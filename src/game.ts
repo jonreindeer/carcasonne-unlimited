@@ -11,6 +11,7 @@ interface TileDefinition {
     edges: [EdgeType, EdgeType, EdgeType, EdgeType];
     imagePath: string;  // Path to individual tile image
     has_shield: boolean;  // Whether the tile has a shield/badge
+    occurrences_per_deck: number;  // How many times this tile appears in a standard deck
 }
 
 interface PlacedTile {
@@ -23,31 +24,31 @@ interface PlacedTile {
 // Define all tile types with individual tile images
 // Edge format: [North, East, South, West]
 const TILE_DEFINITIONS: TileDefinition[] = [
-    { id: '0', edges: [EdgeType.FIELD, EdgeType.FIELD, EdgeType.FIELD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/upscaled/0.png', has_shield: false },  // Monastery in field (upscaled)
-    { id: '1', edges: [EdgeType.FIELD, EdgeType.FIELD, EdgeType.ROAD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/upscaled/1.png', has_shield: false },   // Monastery with road (upscaled)
-    { id: '2', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.CITY, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/2.jpg', has_shield: true },      // Full city w shield
-    { id: '3', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/upscaled/3.png', has_shield: false },     // City 3 sides (open south) (upscaled)
-    { id: '4', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/4.jpg', has_shield: true },     // City 3 sides w shield
-    { id: '5', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.ROAD, EdgeType.CITY], imagePath: 'carcasonne-tiles/upscaled/5.png', has_shield: false },      // City 3 sides, road south (upscaled)
-    { id: '6', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.ROAD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/6.jpg', has_shield: true },     // City top, road south w shield
-    { id: '7', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/upscaled/7.png', has_shield: false },    // City top and left (upscaled)
-    { id: '8', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/8.jpg', has_shield: true },    // City top and left w shield
-    { id: '9', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.ROAD, EdgeType.CITY], imagePath: 'carcasonne-tiles/upscaled/9.png', has_shield: false },      // City top and left, road south and right (upscaled)
-    { id: '10', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.ROAD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/10.jpg', has_shield: true },     // City top and left, road south and right
-    { id: '11', edges: [EdgeType.FIELD, EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/upscaled/11.png', has_shield: false },   // City sides (east+west) (upscaled)
-    { id: '12', edges: [EdgeType.FIELD, EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/12.jpg', has_shield: true },   // City sides (east+west) w shield
-    { id: '13', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/upscaled/13.png', has_shield: false },   // City top and left (upscaled)
-    { id: '14', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY, EdgeType.FIELD], imagePath: 'carcasonne-tiles/upscaled/14.png', has_shield: false },   // City top and bottom separate (upscaled)
-    { id: '15', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.FIELD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/upscaled/15.png', has_shield: false },  // City top (upscaled)
-    { id: '16', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/upscaled/16.png', has_shield: false },    // City top, road bottom and left (upscaled)
-    { id: '17', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.ROAD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/upscaled/17.png', has_shield: false },    // City top, road bottom and right (upscaled)
-    { id: '18', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/upscaled/18.png', has_shield: false },     // City top with roads T (upscaled)
-    { id: '19', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.FIELD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/upscaled/19.png', has_shield: false },    // City top with road side to side (upscaled)
-    { id: '20', edges: [EdgeType.ROAD, EdgeType.FIELD, EdgeType.ROAD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/upscaled/20.png', has_shield: false },   // Road straight (north-south) (upscaled)
-    { id: '21', edges: [EdgeType.FIELD, EdgeType.FIELD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/upscaled/21.png', has_shield: false },   // Road bottom to left (upscaled)
-    { id: '22', edges: [EdgeType.FIELD, EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/upscaled/22.png', has_shield: false },    // Road T-junction (3-way) (upscaled)
-    { id: '23', edges: [EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/upscaled/23.png', has_shield: false },     // Road cross (4-way) (upscaled)
-    { id: '24', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.FIELD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/upscaled/24.png', has_shield: false },     // Road east west with city (Starting Tile) (upscaled)
+    { id: '0', edges: [EdgeType.FIELD, EdgeType.FIELD, EdgeType.FIELD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/upscaled/0.png', has_shield: false, occurrences_per_deck: 4 },  // Monastery in field (upscaled)
+    { id: '1', edges: [EdgeType.FIELD, EdgeType.FIELD, EdgeType.ROAD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/upscaled/1.png', has_shield: false, occurrences_per_deck: 2 },   // Monastery with road (upscaled)
+    { id: '2', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.CITY, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/2.jpg', has_shield: true, occurrences_per_deck: 1 },      // Full city w shield
+    { id: '3', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/upscaled/3.png', has_shield: false, occurrences_per_deck: 3 },     // City 3 sides (open south) (upscaled)
+    { id: '4', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/4.jpg', has_shield: true, occurrences_per_deck: 2 },     // City 3 sides w shield
+    { id: '5', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.ROAD, EdgeType.CITY], imagePath: 'carcasonne-tiles/upscaled/5.png', has_shield: false, occurrences_per_deck: 1 },      // City 3 sides, road south (upscaled)
+    { id: '6', edges: [EdgeType.CITY, EdgeType.CITY, EdgeType.ROAD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/6.jpg', has_shield: true, occurrences_per_deck: 2 },     // City top, road south w shield
+    { id: '7', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/upscaled/7.png', has_shield: false, occurrences_per_deck: 3 },    // City top and left (upscaled)
+    { id: '8', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/8.jpg', has_shield: true, occurrences_per_deck: 2 },    // City top and left w shield
+    { id: '9', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.ROAD, EdgeType.CITY], imagePath: 'carcasonne-tiles/upscaled/9.png', has_shield: false, occurrences_per_deck: 3 },      // City top and left, road south and right (upscaled)
+    { id: '10', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.ROAD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/10.jpg', has_shield: true, occurrences_per_deck: 2 },     // City top and left, road south and right
+    { id: '11', edges: [EdgeType.FIELD, EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/upscaled/11.png', has_shield: false, occurrences_per_deck: 1 },   // City sides (east+west) (upscaled)
+    { id: '12', edges: [EdgeType.FIELD, EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/individual/12.jpg', has_shield: true, occurrences_per_deck: 2 },   // City sides (east+west) w shield
+    { id: '13', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.FIELD, EdgeType.CITY], imagePath: 'carcasonne-tiles/upscaled/13.png', has_shield: false, occurrences_per_deck: 2 },   // City top and left (upscaled)
+    { id: '14', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.CITY, EdgeType.FIELD], imagePath: 'carcasonne-tiles/upscaled/14.png', has_shield: false, occurrences_per_deck: 3 },   // City top and bottom separate (upscaled)
+    { id: '15', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.FIELD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/upscaled/15.png', has_shield: false, occurrences_per_deck: 5 },  // City top (upscaled)
+    { id: '16', edges: [EdgeType.CITY, EdgeType.FIELD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/upscaled/16.png', has_shield: false, occurrences_per_deck: 3 },    // City top, road bottom and left (upscaled)
+    { id: '17', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.ROAD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/upscaled/17.png', has_shield: false, occurrences_per_deck: 3 },    // City top, road bottom and right (upscaled)
+    { id: '18', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/upscaled/18.png', has_shield: false, occurrences_per_deck: 3 },     // City top with roads T (upscaled)
+    { id: '19', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.FIELD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/upscaled/19.png', has_shield: false, occurrences_per_deck: 8 },    // City top with road side to side (upscaled)
+    { id: '20', edges: [EdgeType.ROAD, EdgeType.FIELD, EdgeType.ROAD, EdgeType.FIELD], imagePath: 'carcasonne-tiles/upscaled/20.png', has_shield: false, occurrences_per_deck: 8 },   // Road straight (north-south) (upscaled)
+    { id: '21', edges: [EdgeType.FIELD, EdgeType.FIELD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/upscaled/21.png', has_shield: false, occurrences_per_deck: 9 },   // Road bottom to left (upscaled)
+    { id: '22', edges: [EdgeType.FIELD, EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/upscaled/22.png', has_shield: false, occurrences_per_deck: 4 },    // Road T-junction (3-way) (upscaled)
+    { id: '23', edges: [EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/upscaled/23.png', has_shield: false, occurrences_per_deck: 1 },     // Road cross (4-way) (upscaled)
+    { id: '24', edges: [EdgeType.CITY, EdgeType.ROAD, EdgeType.FIELD, EdgeType.ROAD], imagePath: 'carcasonne-tiles/upscaled/24.png', has_shield: false, occurrences_per_deck: 1 },     // Road east west with city (Starting Tile) (upscaled)
 ];
 
 class CarcassonneGame {
